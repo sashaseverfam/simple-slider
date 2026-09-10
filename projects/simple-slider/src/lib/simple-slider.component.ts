@@ -4,20 +4,20 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   effect,
   ElementRef,
   inject,
   input,
-  OnDestroy,
   output,
   ViewChild,
 } from '@angular/core';
 import { WINDOW, WINDOW_PROVIDERS } from './providers/window.providers';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   debounceTime,
   fromEvent,
   startWith,
-  Subscription,
   switchMap,
   distinctUntilChanged,
   of,
@@ -37,10 +37,12 @@ import { SimpleSliderPhotoComponent } from './components/simple-slider-photo/sim
   providers: [WINDOW_PROVIDERS],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
+export class SimpleSliderComponent implements AfterViewInit {
   private readonly window = inject(WINDOW);
 
   private readonly cdr = inject(ChangeDetectorRef);
+
+  private readonly destroyRef = inject(DestroyRef);
 
   propertyPhotos = input<ISliderPhoto[]>([]);
   selectedElementIndex = input(0);
@@ -87,11 +89,6 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
   touchStartX = 0;
   touchCurrentX = 0;
 
-  private _subs: Subscription[] = [];
-  set subs(sub: Subscription) {
-    this._subs.push(sub);
-  }
-
   constructor() {
     afterNextRender(() => {
       if (this.sliderContainer) {
@@ -120,10 +117,6 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
       this.initGalleryTrack();
       this.initWheelAction(this.galleryTrack);
     }
-  }
-
-  ngOnDestroy() {
-    this._subs.forEach((s) => s.unsubscribe());
   }
 
   public stepPrevSlider(): void {
@@ -255,7 +248,9 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
   }
 
   private initWheelAction(elementRef: ElementRef) {
-    this.subs = fromEvent<WheelEvent>(elementRef.nativeElement, 'wheel').subscribe(
+    fromEvent<WheelEvent>(elementRef.nativeElement, 'wheel')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(
       (e: WheelEvent) => {
         if (!this.arrowsHidden) {
           e.preventDefault();
@@ -290,8 +285,8 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
       ),
     );
 
-    this.subs = resize$
-      .pipe(distinctUntilChanged(), debounceTime(100))
+    resize$
+      .pipe(distinctUntilChanged(), debounceTime(100), takeUntilDestroyed(this.destroyRef))
       .subscribe(([currentWidthPropertyPhotoSlider, galleryUloffsetWidth]) => {
         this.galleryWidth = galleryUloffsetWidth;
         const count =
@@ -330,11 +325,12 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
       }),
     );
 
-    this.subs = longTouch$
+    longTouch$
       .pipe(
         switchMap(() => {
           return interval(1000).pipe(takeUntil(touchend$));
         }),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => {
         switch (typeArrowAction) {
@@ -363,7 +359,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
       }),
     );
 
-    this.subs = click$.subscribe(() => {
+    click$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       switch (typeArrowAction) {
         case EArrowAction.STEP_PREV: {
           if (this.prevArrowLongPress) {
@@ -384,11 +380,12 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    this.subs = longClick$
+    longClick$
       .pipe(
         switchMap(() => {
           return interval(1000).pipe(takeUntil(mouseUp$));
         }),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => {
         switch (typeArrowAction) {

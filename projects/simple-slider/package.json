@@ -1,12 +1,36 @@
 {
-  "name": "simple-slider",
-  "version": "0.0.1",
+  "name": "@severfam/simple-slider-angular",
+  "version": "0.1.0",
+  "description": "A lightweight, configurable photo slider/gallery component for Angular with touch support, arrow navigation, and full customization via signal-based inputs.",
+  "keywords": [
+    "angular",
+    "slider",
+    "gallery",
+    "photo-slider",
+    "image-carousel",
+    "carousel",
+    "component",
+    "ng",
+    "angular-component",
+    "touch-slider",
+    "responsive-slider"
+  ],
+  "license": "MIT",
   "peerDependencies": {
-    "@angular/common": "^21.2.0",
-    "@angular/core": "^21.2.0"
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/platform-browser": "^21.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sashaseverfam/simple-slider.git"
+  },
+  "homepage": "https://github.com/sashaseverfam/simple-slider#readme",
+  "bugs": {
+    "url": "https://github.com/sashaseverfam/simple-slider/issues"
+  }
 }

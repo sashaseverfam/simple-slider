@@ -1,64 +1,138 @@
-# SimpleSliderComponent
+# Simple Slider Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+A lightweight, configurable photo slider/gallery component for Angular with touch support, arrow navigation, and full customization via signal-based inputs.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Installation
 
 ```bash
-ng generate component component-name
+npm install @severfam/simple-slider-angular
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Requirements
 
-```bash
-ng generate --help
+- Angular 21+
+- `@angular/common`
+- `@angular/core`
+- `@angular/platform-browser`
+
+## Usage
+
+### Import
+
+```typescript
+import { SimpleSliderComponent, ISliderPhoto } from '@severfam/simple-slider-angular';
 ```
 
-## Building
+### Component
 
-To build the library, run:
+```typescript
+@Component({
+  selector: 'app-root',
+  imports: [SimpleSliderComponent],
+  template: `
+    <lib-simple-slider
+      [propertyPhotos]="photos"
+      [selectedElementIndex]="selectedIndex"
+      [cardWidth]="100"
+      [cardHeight]="150"
+      (changeModel)="onSelect($event)"
+    ></lib-simple-slider>
+  `,
+})
+export class App {
+  protected photos: ISliderPhoto[] = [
+    { url: 'https://example.com/photo1.jpg', name: 'Photo 1', alt: 'Description' },
+    { url: 'https://example.com/photo2.jpg', name: 'Photo 2', alt: 'Description' },
+  ];
 
-```bash
-ng build simple-slider
+  protected selectedIndex = 0;
+
+  onSelect(index: number): void {
+    this.selectedIndex = index;
+  }
+}
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+## API Reference
 
-### Publishing the Library
+### Interface: `ISliderPhoto`
 
-Once the project is built, you can publish your library by following these steps:
-
-1. Navigate to the `dist` directory:
-
-   ```bash
-   cd dist/simple-slider
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```typescript
+interface ISliderPhoto {
+  url: string | SafeResourceUrl;
+  name: string;
+  alt: string;
+  disabled?: boolean;
+}
 ```
 
-## Running end-to-end tests
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `url` | `string \| SafeResourceUrl` | Yes | URL of the photo |
+| `name` | `string` | Yes | Display name of the photo |
+| `alt` | `string` | Yes | Alt text for accessibility |
+| `disabled` | `boolean` | No | If true, the photo cannot be selected |
 
-For end-to-end (e2e) testing, run:
+### Inputs
 
-```bash
-ng e2e
-```
+#### Data
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `propertyPhotos` | `ISliderPhoto[]` | `[]` | Array of photos to display |
+| `selectedElementIndex` | `number` | `0` | Index of the currently selected photo |
 
-## Additional Resources
+#### Card Dimensions
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `cardWidth` | `number` | `60` | Width of each photo card in pixels |
+| `cardHeight` | `number` | `90` | Height of each photo card in pixels |
+| `cardMargin` | `number` | `10` | Horizontal margin between cards in pixels |
+| `cardPadding` | `number` | `2` | Padding inside each card in pixels |
+| `borderWidth` | `number` | `1` | Border width of each card in pixels |
+
+#### Colors
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `activeBorderColor` | `string` | `'#1976d2'` | Border color for the selected photo |
+| `defaultBorderColor` | `string` | `'#fff'` | Border color for non-selected photos |
+| `arrowColor` | `string` | `'#333'` | Color of the arrow icons |
+| `inactiveIconColor` | `string` | `'#9e9e9e'` | Color of arrow icons when disabled |
+| `arrowBackgroundColor` | `string` | `'transparent'` | Background color of arrow buttons |
+| `arrowBorderColor` | `string` | `'transparent'` | Border color of arrow buttons |
+| `arrowBorderWidth` | `number` | `0` | Border width of arrow buttons in pixels |
+
+#### Behavior
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `longClickDelay` | `number` | `200` | Delay in ms before long press triggers continuous scrolling |
+| `touchDelta` | `number` | `20` | Minimum horizontal movement in px to trigger a swipe |
+| `arrowWidth` | `number` | `36` | Width of arrow buttons in pixels |
+
+### Outputs
+
+| Output | Type | Description |
+|--------|------|-------------|
+| `changeModel` | `number` | Emits the index of the photo when clicked |
+
+### Public Methods
+
+| Method | Description |
+|--------|-------------|
+| `stepPrevSlider()` | Navigate to the previous photo |
+| `stepNextSlider()` | Navigate to the next photo |
+| `computedPositionSlider()` | Recalculate slider position based on `selectedElementIndex` |
+
+## Features
+
+- Signal-based inputs (Angular 21+)
+- Touch swipe support
+- Mouse wheel navigation
+- Long press on arrows for continuous scrolling
+- Auto-hiding arrows when all photos are visible
+- Responsive to window resize
+- Configurable dimensions, colors, and behavior
+- Lightweight with no external dependencies

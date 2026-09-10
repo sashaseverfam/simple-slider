@@ -1,7 +1,14 @@
 <div class="property-photo-slider" #propertyPhotoSlider>
   <div class="arrow-prev" [class.novisible]="visibleArrow">
-    <button type="button" #arrowPrevButton>
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" [style.color]="activePrevArrowSlider ? inactiveIconColor : null">
+    <button
+      type="button"
+      #arrowPrevButton
+      [style.background-color]="arrowBackgroundColor"
+      [style.border-color]="arrowBorderColor"
+      [style.border-width.px]="arrowBorderWidth"
+      style="border-style: solid"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" [style.color]="activePrevArrowSlider ? inactiveIconColor : arrowColor">
         <path fill="currentColor" d="M20.547 21.453l-6.107-6.12 6.107-6.12-1.88-1.88-8 8 8 8z"></path>
       </svg>
     </button>
@@ -29,8 +36,15 @@
   </div>
 
   <div class="arrow-next" [class.novisible]="visibleArrow">
-    <button type="button" #arrowNextButton>
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" [style.color]="activeNextArrowSlider ? inactiveIconColor : null">
+    <button
+      type="button"
+      #arrowNextButton
+      [style.background-color]="arrowBackgroundColor"
+      [style.border-color]="arrowBorderColor"
+      [style.border-width.px]="arrowBorderWidth"
+      style="border-style: solid"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" [style.color]="activeNextArrowSlider ? inactiveIconColor : arrowColor">
         <path fill="currentColor" d="M11.453 21.787l6.107-6.12-6.107-6.12 1.88-1.88 8 8-8 8z"></path>
       </svg>
     </button>

@@ -3,26 +3,7 @@
   line-height: normal;
   user-select: none;
 
-  .arrow-prev {
-    touch-action: manipulation;
-    min-width: 36px;
-
-    button {
-      height: 100%;
-      width: 100%;
-      cursor: pointer;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    svg {
-      width: 24px;
-      height: 24px;
-    }
-  }
-
+  .arrow-prev,
   .arrow-next {
     touch-action: manipulation;
     min-width: 36px;

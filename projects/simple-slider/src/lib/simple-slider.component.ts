@@ -59,6 +59,10 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
   @Input() defaultBorderColor = '#fff';
   @Input() inactiveIconColor = '#9e9e9e';
   @Input() longClickDelay = 200;
+  @Input() arrowBackgroundColor = 'transparent';
+  @Input() arrowBorderColor = 'transparent';
+  @Input() arrowBorderWidth = 0;
+  @Input() arrowColor = '#333';
 
   @Output() changeModel: EventEmitter<number> = new EventEmitter();
 

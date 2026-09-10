@@ -5,8 +5,8 @@
     <h2>1. Default</h2>
     <lib-simple-slider
       [propertyPhotos]="photos"
-      [selectedElementIndex]="selectedIndex"
-      (changeModel)="onSelect($event)"
+      [selectedElementIndex]="selectedIndices[0]"
+      (changeModel)="onSelect(0, $event)"
     ></lib-simple-slider>
   </section>
 
@@ -16,8 +16,8 @@
       [propertyPhotos]="photos"
       [cardWidth]="120"
       [cardHeight]="180"
-      [selectedElementIndex]="selectedIndex"
-      (changeModel)="onSelect($event)"
+      [selectedElementIndex]="selectedIndices[1]"
+      (changeModel)="onSelect(1, $event)"
     ></lib-simple-slider>
   </section>
 
@@ -29,8 +29,8 @@
       [cardHeight]="70"
       [borderWidth]="3"
       [cardMargin]="6"
-      [selectedElementIndex]="selectedIndex"
-      (changeModel)="onSelect($event)"
+      [selectedElementIndex]="selectedIndices[2]"
+      (changeModel)="onSelect(2, $event)"
     ></lib-simple-slider>
   </section>
 
@@ -42,8 +42,8 @@
       [defaultBorderColor]="'#fce4ec'"
       [arrowColor]="'#e91e63'"
       [inactiveIconColor]="'#f48fb1'"
-      [selectedElementIndex]="selectedIndex"
-      (changeModel)="onSelect($event)"
+      [selectedElementIndex]="selectedIndices[3]"
+      (changeModel)="onSelect(3, $event)"
     ></lib-simple-slider>
   </section>
 
@@ -58,8 +58,8 @@
       [arrowBackgroundColor]="'#616161'"
       [arrowBorderColor]="'#9e9e9e'"
       [arrowBorderWidth]="1"
-      [selectedElementIndex]="selectedIndex"
-      (changeModel)="onSelect($event)"
+      [selectedElementIndex]="selectedIndices[4]"
+      (changeModel)="onSelect(4, $event)"
     ></lib-simple-slider>
   </section>
 
@@ -74,8 +74,8 @@
       [arrowBackgroundColor]="'#c8e6c9'"
       [arrowBorderColor]="'#4caf50'"
       [arrowBorderWidth]="2"
-      [selectedElementIndex]="selectedIndex"
-      (changeModel)="onSelect($event)"
+      [selectedElementIndex]="selectedIndices[5]"
+      (changeModel)="onSelect(5, $event)"
     ></lib-simple-slider>
   </section>
 
@@ -88,8 +88,8 @@
       [cardMargin]="4"
       [activeBorderColor]="'#9c27b0'"
       [defaultBorderColor]="'#f3e5f5'"
-      [selectedElementIndex]="selectedIndex"
-      (changeModel)="onSelect($event)"
+      [selectedElementIndex]="selectedIndices[6]"
+      (changeModel)="onSelect(6, $event)"
     ></lib-simple-slider>
   </section>
 
@@ -97,8 +97,8 @@
     <h2>8. Disabled Items</h2>
     <lib-simple-slider
       [propertyPhotos]="mixedPhotos"
-      [selectedElementIndex]="selectedIndex"
-      (changeModel)="onSelect($event)"
+      [selectedElementIndex]="selectedIndices[7]"
+      (changeModel)="onSelect(7, $event)"
     ></lib-simple-slider>
   </section>
 </div>

@@ -23,9 +23,9 @@ export class App {
     { url: 'https://picsum.photos/id/42/200/300', name: 'City', alt: 'City lights' },
   ];
 
-  protected selectedIndex = 0;
+  protected selectedIndices: number[] = Array(8).fill(0);
 
-  onSelect(index: number): void {
-    this.selectedIndex = index;
+  onSelect(sliderIndex: number, photoIndex: number): void {
+    this.selectedIndices[sliderIndex] = photoIndex;
   }
 }

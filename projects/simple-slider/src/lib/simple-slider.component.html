@@ -4,12 +4,12 @@
       class="simple-slider__button"
       type="button"
       #arrowPrevButton
-      [style.background-color]="arrowBackgroundColor"
-      [style.border-color]="arrowBorderColor"
-      [style.border-width.px]="arrowBorderWidth"
+      [style.background-color]="arrowBackgroundColor()"
+      [style.border-color]="arrowBorderColor()"
+      [style.border-width.px]="arrowBorderWidth()"
       style="border-style: solid"
     >
-      <svg class="simple-slider__icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" [style.color]="activePrevArrowSlider ? inactiveIconColor : arrowColor">
+      <svg class="simple-slider__icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" [style.color]="activePrevArrowSlider ? inactiveIconColor() : arrowColor()">
         <path fill="currentColor" d="M20.547 21.453l-6.107-6.12 6.107-6.12-1.88-1.88-8 8 8 8z"></path>
       </svg>
     </button>
@@ -17,19 +17,19 @@
 
   <div class="simple-slider__gallery">
     <ul class="simple-slider__track" #galleryUl (touchstart)="touchStartGallery($event)" (touchmove)="touchMoveGallery($event)">
-      @for (photo of propertyPhotos; let i = $index; track photo.url) {
-        <li class="simple-slider__item" [style.margin-right.px]="cardMargin">
+      @for (photo of propertyPhotos(); let i = $index; track photo.url) {
+        <li class="simple-slider__item" [style.margin-right.px]="cardMargin()">
           <simple-slider-photo
             [photoLink]="photo.url"
             [photoAlt]="photo.alt"
             [isDisabled]="photo.disabled || false"
-            [isActive]="i === selectedElementIndex"
-            [cardWidth]="cardWidth"
-            [cardHeight]="cardHeight"
-            [borderWidth]="borderWidth"
-            [cardPadding]="cardPadding"
-            [activeBorderColor]="activeBorderColor"
-            [defaultBorderColor]="defaultBorderColor"
+            [isActive]="i === selectedElementIndex()"
+            [cardWidth]="cardWidth()"
+            [cardHeight]="cardHeight()"
+            [borderWidth]="borderWidth()"
+            [cardPadding]="cardPadding()"
+            [activeBorderColor]="activeBorderColor()"
+            [defaultBorderColor]="defaultBorderColor()"
             (changeModel)="changeModel.emit(i)"
           ></simple-slider-photo>
         </li>
@@ -42,12 +42,12 @@
       class="simple-slider__button"
       type="button"
       #arrowNextButton
-      [style.background-color]="arrowBackgroundColor"
-      [style.border-color]="arrowBorderColor"
-      [style.border-width.px]="arrowBorderWidth"
+      [style.background-color]="arrowBackgroundColor()"
+      [style.border-color]="arrowBorderColor()"
+      [style.border-width.px]="arrowBorderWidth()"
       style="border-style: solid"
     >
-      <svg class="simple-slider__icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" [style.color]="activeNextArrowSlider ? inactiveIconColor : arrowColor">
+      <svg class="simple-slider__icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" [style.color]="activeNextArrowSlider ? inactiveIconColor() : arrowColor()">
         <path fill="currentColor" d="M11.453 21.787l6.107-6.12-6.107-6.12 1.88-1.88 8 8-8 8z"></path>
       </svg>
     </button>

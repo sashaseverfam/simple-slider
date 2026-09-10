@@ -1,18 +1,18 @@
 <div
   class="simple-slider-photo"
-  [class.simple-slider-photo--disabled]="isDisabled"
-  [style.border-width.px]="borderWidth"
-  [style.padding.px]="cardPadding"
+  [class.simple-slider-photo--disabled]="isDisabled()"
+  [style.border-width.px]="borderWidth()"
+  [style.padding.px]="cardPadding()"
   [style.border-color]="borderColor"
   (click)="changeModel.emit()"
 >
-  @if (photoLink) {
+  @if (photoLink()) {
     <img
       class="simple-slider-photo__image"
-      [alt]="photoAlt"
-      [ngSrc]="photoLink"
-      [width]="cardWidth - 2*cardPadding - 2*borderWidth"
-      [height]="cardHeight - 2*cardPadding - 2*borderWidth"
+      [alt]="photoAlt()"
+      [ngSrc]="photoLink()!"
+      [width]="cardWidth() - 2*cardPadding() - 2*borderWidth()"
+      [height]="cardHeight() - 2*cardPadding() - 2*borderWidth()"
     />
   }
 </div>

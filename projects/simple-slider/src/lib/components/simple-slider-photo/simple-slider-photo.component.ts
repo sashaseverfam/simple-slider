@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { SafeResourceUrl } from '@angular/platform-browser';
 
@@ -10,20 +10,20 @@ import { SafeResourceUrl } from '@angular/platform-browser';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SimpleSliderPhotoComponent {
-  @Input() photoLink?: string | SafeResourceUrl;
-  @Input() photoAlt = '';
-  @Input() isActive = false;
-  @Input() isDisabled = false;
-  @Input() cardWidth = 0;
-  @Input() cardHeight = 0;
-  @Input() borderWidth = 0;
-  @Input() cardPadding = 0;
-  @Input() activeBorderColor = '#1976d2';
-  @Input() defaultBorderColor = '#fff';
+  photoLink = input<string | SafeResourceUrl>();
+  photoAlt = input('');
+  isActive = input(false);
+  isDisabled = input(false);
+  cardWidth = input(0);
+  cardHeight = input(0);
+  borderWidth = input(0);
+  cardPadding = input(0);
+  activeBorderColor = input('#1976d2');
+  defaultBorderColor = input('#fff');
 
-  @Output() changeModel: EventEmitter<void> = new EventEmitter();
+  changeModel = output<void>();
 
   get borderColor(): string {
-    return this.isActive ? this.activeBorderColor : this.defaultBorderColor;
+    return this.isActive() ? this.activeBorderColor() : this.defaultBorderColor();
   }
 }

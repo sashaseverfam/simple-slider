@@ -4,14 +4,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  effect,
   ElementRef,
-  EventEmitter,
   inject,
-  Input,
-  OnChanges,
+  input,
   OnDestroy,
-  Output,
-  SimpleChanges,
+  output,
   ViewChild,
 } from '@angular/core';
 import { WINDOW, WINDOW_PROVIDERS } from './providers/window.providers';
@@ -39,28 +37,28 @@ import { SimpleSliderPhotoComponent } from './components/simple-slider-photo/sim
   providers: [WINDOW_PROVIDERS],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChanges {
+export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
   private readonly window = inject(WINDOW);
 
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() propertyPhotos: ISliderPhoto[] = [];
-  @Input() selectedElementIndex = 0;
-  @Input() cardWidth = 60;
-  @Input() cardHeight = 90;
-  @Input() cardMargin = 10;
-  @Input() borderWidth = 1;
-  @Input() cardPadding = 2;
-  @Input() activeBorderColor = '#1976d2';
-  @Input() defaultBorderColor = '#fff';
-  @Input() inactiveIconColor = '#9e9e9e';
-  @Input() longClickDelay = 200;
-  @Input() arrowBackgroundColor = 'transparent';
-  @Input() arrowBorderColor = 'transparent';
-  @Input() arrowBorderWidth = 0;
-  @Input() arrowColor = '#333';
+  propertyPhotos = input<ISliderPhoto[]>([]);
+  selectedElementIndex = input(0);
+  cardWidth = input(60);
+  cardHeight = input(90);
+  cardMargin = input(10);
+  borderWidth = input(1);
+  cardPadding = input(2);
+  activeBorderColor = input('#1976d2');
+  defaultBorderColor = input('#fff');
+  inactiveIconColor = input('#9e9e9e');
+  longClickDelay = input(200);
+  arrowBackgroundColor = input('transparent');
+  arrowBorderColor = input('transparent');
+  arrowBorderWidth = input(0);
+  arrowColor = input('#333');
 
-  @Output() changeModel: EventEmitter<number> = new EventEmitter();
+  changeModel = output<number>();
 
   @ViewChild('propertyPhotoSlider', { static: false, read: ElementRef })
   propertyPhotoSlider?: ElementRef;
@@ -111,18 +109,17 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
     });
   }
 
+  private syncCardSliderCount = effect(() => {
+    const photos = this.propertyPhotos();
+    if (photos?.length) {
+      this.cardSliderCount = photos.length;
+    }
+  }, { allowSignalWrites: true });
+
   ngAfterViewInit() {
     if (this.galleryUl) {
       this.initGalleryUl();
       this.initWheelAction(this.galleryUl);
-    }
-  }
-
-  ngOnChanges(simpleChanges: SimpleChanges) {
-    if (simpleChanges['propertyPhotos']) {
-      if ((this.propertyPhotos || []).length) {
-        this.cardSliderCount = (this.propertyPhotos || []).length;
-      }
     }
   }
 
@@ -143,7 +140,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
   }
 
   private actionSlider(action: ESliderAction, touchDelta = 0): void {
-    const countVisibleSlider = Math.floor(this.widthGallery / (this.cardWidth + this.cardMargin));
+    const countVisibleSlider = Math.floor(this.widthGallery / (this.cardWidth() + this.cardMargin()));
 
     let currentMarginLeft = parseInt(
       (this._galleryUl?.style.marginLeft as string).replace('px', ''),
@@ -152,12 +149,12 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
     currentMarginLeft = isNaN(currentMarginLeft) ? 0 : currentMarginLeft;
 
     let computedPositionSlider = 0;
-    const maxDelta = -(this.cardWidth + this.cardMargin) * this.cardSliderCount + this.widthGallery;
+    const maxDelta = -(this.cardWidth() + this.cardMargin()) * this.cardSliderCount + this.widthGallery;
     let positionSlider = 0;
 
     switch (action) {
       case ESliderAction.STEPNEXTSLIDER: {
-        computedPositionSlider = currentMarginLeft - (this.cardWidth + this.cardMargin);
+        computedPositionSlider = currentMarginLeft - (this.cardWidth() + this.cardMargin());
         positionSlider = Math.max(computedPositionSlider, maxDelta);
 
         if (positionSlider < maxDelta) {
@@ -172,7 +169,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
       }
 
       case ESliderAction.STEPPREVSLIDER: {
-        computedPositionSlider = currentMarginLeft + (this.cardWidth + this.cardMargin);
+        computedPositionSlider = currentMarginLeft + (this.cardWidth() + this.cardMargin());
         positionSlider = Math.min(computedPositionSlider, 0);
 
         if (positionSlider > 0) {
@@ -183,7 +180,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
       }
 
       case ESliderAction.COMPUTEDPOSITIONSLIDER: {
-        computedPositionSlider = -(this.cardWidth + this.cardMargin) * this.selectedElementIndex;
+        computedPositionSlider = -(this.cardWidth() + this.cardMargin()) * this.selectedElementIndex();
         positionSlider = Math.max(computedPositionSlider, maxDelta);
 
         if (positionSlider > 0) {
@@ -300,7 +297,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
         this.widthGallery = galleryUloffsetWidth;
         const count =
           (currentWidthPropertyPhotoSlider - 2 * this.ARROWWIDTHSLIDER) /
-          (this.cardWidth + this.cardMargin);
+          (this.cardWidth() + this.cardMargin());
         const countCeil = Math.ceil(count);
 
         this.visibleArrow = countCeil > this.cardSliderCount;
@@ -330,7 +327,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
 
     const longTouch$ = touchstart$.pipe(
       switchMap((v) => {
-        return of(v).pipe(delay(this.longClickDelay), takeUntil(touchend$));
+        return of(v).pipe(delay(this.longClickDelay()), takeUntil(touchend$));
       }),
     );
 
@@ -363,7 +360,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
 
     const longClick$ = mouseDown$.pipe(
       switchMap((v) => {
-        return of(v).pipe(delay(this.longClickDelay), takeUntil(mouseUp$));
+        return of(v).pipe(delay(this.longClickDelay()), takeUntil(mouseUp$));
       }),
     );
 

@@ -62,10 +62,10 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
 
   changeModel = output<number>();
 
-  @ViewChild('propertyPhotoSlider', { static: false, read: ElementRef })
-  propertyPhotoSlider?: ElementRef;
-  @ViewChild('galleryUl', { static: false, read: ElementRef })
-  galleryUl?: ElementRef;
+  @ViewChild('sliderContainer', { static: false, read: ElementRef })
+  sliderContainer?: ElementRef;
+  @ViewChild('galleryTrack', { static: false, read: ElementRef })
+  galleryTrack?: ElementRef;
   @ViewChild('arrowPrevButton', { static: false, read: ElementRef })
   arrowPrevButton?: ElementRef;
   @ViewChild('arrowNextButton', { static: false, read: ElementRef })
@@ -74,8 +74,8 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
   arrowPrevButtonClickDetected = false;
   arrowNextButtonClickDetected = false;
 
-  private _propertyPhotoSlider?: HTMLDivElement;
-  private _galleryUl?: HTMLDivElement;
+  private _sliderContainer?: HTMLDivElement;
+  private _galleryTrack?: HTMLDivElement;
 
   activeNextArrowSlider = false;
   activePrevArrowSlider = false;
@@ -94,8 +94,8 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
 
   constructor() {
     afterNextRender(() => {
-      if (this.propertyPhotoSlider) {
-        this.initPropertyPhotoSlider();
+      if (this.sliderContainer) {
+        this.initSliderContainer();
       }
 
       if (this.arrowPrevButton) {
@@ -116,9 +116,9 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
   }, { allowSignalWrites: true });
 
   ngAfterViewInit() {
-    if (this.galleryUl) {
-      this.initGalleryUl();
-      this.initWheelAction(this.galleryUl);
+    if (this.galleryTrack) {
+      this.initGalleryTrack();
+      this.initWheelAction(this.galleryTrack);
     }
   }
 
@@ -142,7 +142,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
     const countVisibleSlider = Math.floor(this.widthGallery / (this.cardWidth() + this.cardMargin()));
 
     let currentMarginLeft = parseInt(
-      (this._galleryUl?.style.marginLeft as string).replace('px', ''),
+      (this._galleryTrack?.style.marginLeft as string).replace('px', ''),
       10,
     );
     currentMarginLeft = isNaN(currentMarginLeft) ? 0 : currentMarginLeft;
@@ -208,8 +208,8 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
       }
     }
 
-    if (this._galleryUl) {
-      this._galleryUl.style.marginLeft = positionSlider + 'px';
+    if (this._galleryTrack) {
+      this._galleryTrack.style.marginLeft = positionSlider + 'px';
     }
 
     this.activePrevArrowSlider = positionSlider === 0;
@@ -248,10 +248,10 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private initGalleryUl() {
-    this._galleryUl = this.galleryUl?.nativeElement;
-    this.widthGallery = +(this._galleryUl?.parentElement?.offsetWidth || 0);
-    this.cardSliderCount = this._galleryUl?.children.length || 0;
+  private initGalleryTrack() {
+    this._galleryTrack = this.galleryTrack?.nativeElement;
+    this.widthGallery = +(this._galleryTrack?.parentElement?.offsetWidth || 0);
+    this.cardSliderCount = this._galleryTrack?.children.length || 0;
   }
 
   private initWheelAction(elementRef: ElementRef) {
@@ -270,22 +270,22 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  private initPropertyPhotoSlider() {
+  private initSliderContainer() {
     if (!this.window) {
       return;
     }
 
-    this._propertyPhotoSlider = this.propertyPhotoSlider?.nativeElement;
+    this._sliderContainer = this.sliderContainer?.nativeElement;
 
     const resize$ = fromEvent(this.window, 'resize').pipe(
       startWith([
-        this._propertyPhotoSlider?.offsetWidth,
-        +(this._galleryUl?.parentElement?.offsetWidth || 0),
+        this._sliderContainer?.offsetWidth,
+        +(this._galleryTrack?.parentElement?.offsetWidth || 0),
       ]),
       switchMap(() =>
         of([
-          +(this._propertyPhotoSlider?.offsetWidth || 0),
-          +(this._galleryUl?.parentElement?.offsetWidth || 0),
+          +(this._sliderContainer?.offsetWidth || 0),
+          +(this._galleryTrack?.parentElement?.offsetWidth || 0),
         ]),
       ),
     );

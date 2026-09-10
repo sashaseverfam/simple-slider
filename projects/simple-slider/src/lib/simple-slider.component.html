@@ -1,4 +1,4 @@
-<div class="simple-slider" #propertyPhotoSlider>
+<div class="simple-slider" #sliderContainer>
   <div class="simple-slider__arrow simple-slider__arrow--prev" [class.simple-slider__arrow--hidden]="visibleArrow">
     <button
       class="simple-slider__button"
@@ -16,7 +16,7 @@
   </div>
 
   <div class="simple-slider__gallery">
-    <ul class="simple-slider__track" #galleryUl (touchstart)="touchStartGallery($event)" (touchmove)="touchMoveGallery($event)">
+    <ul class="simple-slider__track" #galleryTrack (touchstart)="touchStartGallery($event)" (touchmove)="touchMoveGallery($event)">
       @for (photo of propertyPhotos(); let i = $index; track photo.url) {
         <li class="simple-slider__item" [style.margin-right.px]="cardMargin()">
           <simple-slider-photo

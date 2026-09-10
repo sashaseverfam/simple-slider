@@ -17,6 +17,12 @@ export class SimpleSliderPhotoComponent {
   @Input() cardHeight = 0;
   @Input() borderWidth = 0;
   @Input() cardPadding = 0;
+  @Input() activeBorderColor = '#1976d2';
+  @Input() defaultBorderColor = '#fff';
 
   @Output() changeModel: EventEmitter<void> = new EventEmitter();
+
+  get borderColor(): string {
+    return this.isActive ? this.activeBorderColor : this.defaultBorderColor;
+  }
 }

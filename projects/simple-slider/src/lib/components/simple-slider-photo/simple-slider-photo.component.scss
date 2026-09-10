@@ -1,18 +1,11 @@
-
 .img-wrapper {
   border-radius: 4px;
   cursor: pointer;
   border-style: solid;
-  border-color: $c-white;
-
-  &--active {
-    border-color: $c-blue;
-  }
 
   &--disabled {
     opacity: 15%;
   }
-
 }
 
 .img-photo {

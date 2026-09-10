@@ -55,6 +55,9 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
   @Input() cardMargin = 10;
   @Input() borderWidth = 1;
   @Input() cardPadding = 2;
+  @Input() activeBorderColor = '#1976d2';
+  @Input() defaultBorderColor = '#fff';
+  @Input() inactiveIconColor = '#9e9e9e';
 
   @Output() changeModel: EventEmitter<number> = new EventEmitter();
 

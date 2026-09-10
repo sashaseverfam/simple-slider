@@ -1,9 +1,9 @@
 <div
   class="img-wrapper"
-  [class.img-wrapper--active]="isActive"
   [class.img-wrapper--disabled]="isDisabled"
   [style.border-width.px]="borderWidth"
-  [style.padding.px] = "cardPadding"
+  [style.padding.px]="cardPadding"
+  [style.border-color]="borderColor"
   (click)="changeModel.emit()"
 >
   @if (photoLink) {

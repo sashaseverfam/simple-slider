@@ -1,7 +1,9 @@
 <div class="property-photo-slider" #propertyPhotoSlider>
-  <div class="arrow-prev" [class.noactive]="activePrevArrowSlider" [class.novisible]="visibleArrow">
+  <div class="arrow-prev" [class.novisible]="visibleArrow">
     <button type="button" #arrowPrevButton>
-      <i class="icon icon-ic_keyboard_arrow_left_18"></i>
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" [style.color]="activePrevArrowSlider ? inactiveIconColor : null">
+        <path fill="currentColor" d="M20.547 21.453l-6.107-6.12 6.107-6.12-1.88-1.88-8 8 8 8z"></path>
+      </svg>
     </button>
   </div>
 
@@ -13,10 +15,12 @@
             [photoLink]="photo.url"
             [isDisabled]="photo.disabled || false"
             [isActive]="i === selectedElementIndex"
-            [cardWidth] = "cardWidth"
-            [cardHeight] = "cardHeight"
-            [borderWidth] = "borderWidth"
-            [cardPadding] = "cardPadding"
+            [cardWidth]="cardWidth"
+            [cardHeight]="cardHeight"
+            [borderWidth]="borderWidth"
+            [cardPadding]="cardPadding"
+            [activeBorderColor]="activeBorderColor"
+            [defaultBorderColor]="defaultBorderColor"
             (changeModel)="changeModel.emit(i)"
           ></simple-slider-photo>
         </li>
@@ -24,9 +28,11 @@
     </ul>
   </div>
 
-  <div class="arrow-next" [class.noactive]="activeNextArrowSlider" [class.novisible]="visibleArrow">
+  <div class="arrow-next" [class.novisible]="visibleArrow">
     <button type="button" #arrowNextButton>
-      <i class="icon icon-ic_keyboard_arrow_right"></i>
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" [style.color]="activeNextArrowSlider ? inactiveIconColor : null">
+        <path fill="currentColor" d="M11.453 21.787l6.107-6.12-6.107-6.12 1.88-1.88 8 8-8 8z"></path>
+      </svg>
     </button>
   </div>
 </div>

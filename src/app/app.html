@@ -1,1 +1,8 @@
-
+<div class="app">
+  <h1>{{ title() }}</h1>
+  <lib-simple-slider
+    [propertyPhotos]="photos"
+    [selectedElementIndex]="selectedIndex"
+    (changeModel)="onSelect($event)"
+  ></lib-simple-slider>
+</div>

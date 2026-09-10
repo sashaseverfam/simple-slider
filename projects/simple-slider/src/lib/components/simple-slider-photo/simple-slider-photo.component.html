@@ -1,6 +1,6 @@
 <div
-  class="img-wrapper"
-  [class.img-wrapper--disabled]="isDisabled"
+  class="simple-slider-photo"
+  [class.simple-slider-photo--disabled]="isDisabled"
   [style.border-width.px]="borderWidth"
   [style.padding.px]="cardPadding"
   [style.border-color]="borderColor"
@@ -8,7 +8,7 @@
 >
   @if (photoLink) {
     <img
-      class="img-photo"
+      class="simple-slider-photo__image"
       [alt]="photoAlt"
       [ngSrc]="photoLink"
       [width]="cardWidth - 2*cardPadding - 2*borderWidth"

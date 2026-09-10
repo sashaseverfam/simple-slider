@@ -1,53 +1,47 @@
-.property-photo-slider {
+.simple-slider {
   display: flex;
   line-height: normal;
   user-select: none;
 
-  .arrow-prev,
-  .arrow-next {
+  &__arrow {
     touch-action: manipulation;
     min-width: 36px;
 
-    button {
-      height: 100%;
-      width: 100%;
-      cursor: pointer;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    svg {
-      width: 24px;
-      height: 24px;
+    &--hidden {
+      display: none;
     }
   }
 
-  .gallery {
+  &__button {
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  &__gallery {
     overflow: hidden;
     flex-grow: 1;
-
-    ul {
-      display: flex;
-
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      transition: margin-left 250ms;
-      font-size: 0;
-
-      simpleslider--photo {
-        line-height: normal;
-      }
-    }
-
-    ul > li {
-      display: inline-block;
-    }
   }
 
-  .novisible {
-    display: none;
+  &__track {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    transition: margin-left 250ms;
+    font-size: 0;
+  }
+
+  &__item {
+    display: inline-block;
   }
 }

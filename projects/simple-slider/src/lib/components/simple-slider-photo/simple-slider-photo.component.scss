@@ -1,4 +1,4 @@
-.img-wrapper {
+.simple-slider-photo {
   border-radius: 4px;
   cursor: pointer;
   border-style: solid;
@@ -6,9 +6,9 @@
   &--disabled {
     opacity: 15%;
   }
-}
 
-.img-photo {
-  border-radius: 4px;
-  object-fit: cover;
+  &__image {
+    border-radius: 4px;
+    object-fit: cover;
+  }
 }

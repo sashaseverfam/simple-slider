@@ -1,8 +1,89 @@
 <div class="app">
-  <h1>{{ title() }}</h1>
-  <lib-simple-slider
-    [propertyPhotos]="photos"
-    [selectedElementIndex]="selectedIndex"
-    (changeModel)="onSelect($event)"
-  ></lib-simple-slider>
+  <h1>Simple Slider Examples</h1>
+
+  <section class="example">
+    <h2>1. Default</h2>
+    <lib-simple-slider
+      [propertyPhotos]="photos"
+      [selectedElementIndex]="0"
+    ></lib-simple-slider>
+  </section>
+
+  <section class="example">
+    <h2>2. Large Cards (120x180)</h2>
+    <lib-simple-slider
+      [propertyPhotos]="photos"
+      [cardWidth]="120"
+      [cardHeight]="180"
+    ></lib-simple-slider>
+  </section>
+
+  <section class="example">
+    <h2>3. Small Cards (50x70) + Thick Border</h2>
+    <lib-simple-slider
+      [propertyPhotos]="photos"
+      [cardWidth]="50"
+      [cardHeight]="70"
+      [borderWidth]="3"
+      [cardMargin]="6"
+    ></lib-simple-slider>
+  </section>
+
+  <section class="example">
+    <h2>4. Red Theme</h2>
+    <lib-simple-slider
+      [propertyPhotos]="photos"
+      [activeBorderColor]="'#e91e63'"
+      [defaultBorderColor]="'#fce4ec'"
+      [arrowColor]="'#e91e63'"
+      [inactiveIconColor]="'#f48fb1'"
+    ></lib-simple-slider>
+  </section>
+
+  <section class="example">
+    <h2>5. Dark Theme</h2>
+    <lib-simple-slider
+      [propertyPhotos]="photos"
+      [activeBorderColor]="'#ffd600'"
+      [defaultBorderColor]="'#424242'"
+      [arrowColor]="'#fff'"
+      [inactiveIconColor]="'#757575'"
+      [arrowBackgroundColor]="'#616161'"
+      [arrowBorderColor]="'#9e9e9e'"
+      [arrowBorderWidth]="1"
+    ></lib-simple-slider>
+  </section>
+
+  <section class="example">
+    <h2>6. Green Accent + Rounded Arrows</h2>
+    <lib-simple-slider
+      [propertyPhotos]="photos"
+      [activeBorderColor]="'#4caf50'"
+      [defaultBorderColor]="'#e8f5e9'"
+      [arrowColor]="'#2e7d32'"
+      [inactiveIconColor]="'#a5d6a7'"
+      [arrowBackgroundColor]="'#c8e6c9'"
+      [arrowBorderColor]="'#4caf50'"
+      [arrowBorderWidth]="2"
+    ></lib-simple-slider>
+  </section>
+
+  <section class="example">
+    <h2>7. Minimal + Thin Border</h2>
+    <lib-simple-slider
+      [propertyPhotos]="photos"
+      [borderWidth]="1"
+      [cardPadding]="1"
+      [cardMargin]="4"
+      [activeBorderColor]="'#9c27b0'"
+      [defaultBorderColor]="'#f3e5f5'"
+    ></lib-simple-slider>
+  </section>
+
+  <section class="example">
+    <h2>8. Disabled Items</h2>
+    <lib-simple-slider
+      [propertyPhotos]="mixedPhotos"
+    ></lib-simple-slider>
+  </section>
 </div>

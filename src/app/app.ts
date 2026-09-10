@@ -14,6 +14,7 @@ export class App {
   protected readonly photos = Array.from({ length: 20 }, (_, i) => ({
     url: `https://picsum.photos/id/${i + 1}/200/300`,
     name: `Photo ${i + 1}`,
+    alt: `Photo ${i + 1}`,
   }));
 
   protected selectedIndex = 0;

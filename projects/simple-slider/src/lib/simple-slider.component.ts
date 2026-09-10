@@ -15,7 +15,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { WINDOW, WINDOW_PROVIDERS } from './providers/window.providers';
-import { SafeResourceUrl } from '@angular/platform-browser';
 import {
   debounceTime,
   fromEvent,
@@ -29,6 +28,7 @@ import {
   interval,
 } from 'rxjs';
 import { EArrowAction, ESliderAction } from './enums/slider.enums';
+import { ISliderPhoto } from './interfaces/slider.interface';
 import { SimpleSliderPhotoComponent } from './components/simple-slider-photo/simple-slider-photo.component';
 
 @Component({
@@ -44,11 +44,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
 
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() propertyPhotos: {
-    url: string | SafeResourceUrl;
-    name: string;
-    disabled?: boolean;
-  }[] = [];
+  @Input() propertyPhotos: ISliderPhoto[] = [];
   @Input() selectedElementIndex = 0;
   @Input() cardWidth = 60;
   @Input() cardHeight = 90;

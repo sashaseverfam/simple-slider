@@ -20,6 +20,7 @@
         <li class="gallery-li" [style.margin-right.px]="cardMargin">
           <simple-slider-photo
             [photoLink]="photo.url"
+            [photoAlt]="photo.alt"
             [isDisabled]="photo.disabled || false"
             [isActive]="i === selectedElementIndex"
             [cardWidth]="cardWidth"

@@ -11,6 +11,7 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 })
 export class SimpleSliderPhotoComponent {
   @Input() photoLink?: string | SafeResourceUrl;
+  @Input() photoAlt = '';
   @Input() isActive = false;
   @Input() isDisabled = false;
   @Input() cardWidth = 0;

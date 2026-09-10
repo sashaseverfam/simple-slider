@@ -9,7 +9,7 @@
   @if (photoLink) {
     <img
       class="img-photo"
-      alt=""
+      [alt]="photoAlt"
       [ngSrc]="photoLink"
       [width]="cardWidth - 2*cardPadding - 2*borderWidth"
       [height]="cardHeight - 2*cardPadding - 2*borderWidth"

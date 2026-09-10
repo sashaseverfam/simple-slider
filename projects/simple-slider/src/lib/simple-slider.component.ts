@@ -14,7 +14,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { WINDOW } from './providers/window.providers';
+import { WINDOW, WINDOW_PROVIDERS } from './providers/window.providers';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import {
   debounceTime,
@@ -37,6 +37,7 @@ import { SimpleSliderPhotoComponent } from './components/simple-slider-photo/sim
   templateUrl: './simple-slider.component.html',
   styleUrls: ['./simple-slider.component.scss'],
   imports: [SimpleSliderPhotoComponent],
+  providers: [WINDOW_PROVIDERS],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChanges {

@@ -29,7 +29,6 @@ import {
   interval,
 } from 'rxjs';
 import { EArrowAction, ESliderAction } from './enums/slider.enums';
-import { DELAY_LONG_CLICK } from './const/slider.consts';
 import { SimpleSliderPhotoComponent } from './components/simple-slider-photo/simple-slider-photo.component';
 
 @Component({
@@ -59,6 +58,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
   @Input() activeBorderColor = '#1976d2';
   @Input() defaultBorderColor = '#fff';
   @Input() inactiveIconColor = '#9e9e9e';
+  @Input() longClickDelay = 200;
 
   @Output() changeModel: EventEmitter<number> = new EventEmitter();
 
@@ -330,7 +330,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
 
     const longTouch$ = touchstart$.pipe(
       switchMap((v) => {
-        return of(v).pipe(delay(DELAY_LONG_CLICK), takeUntil(touchend$));
+        return of(v).pipe(delay(this.longClickDelay), takeUntil(touchend$));
       }),
     );
 
@@ -363,7 +363,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy, OnChange
 
     const longClick$ = mouseDown$.pipe(
       switchMap((v) => {
-        return of(v).pipe(delay(DELAY_LONG_CLICK), takeUntil(mouseUp$));
+        return of(v).pipe(delay(this.longClickDelay), takeUntil(mouseUp$));
       }),
     );
 

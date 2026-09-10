@@ -1,0 +1,63 @@
+
+.property-photo-slider {
+  display: flex;
+  line-height: normal;
+  user-select: none;
+
+  .arrow-prev {
+    touch-action: manipulation;
+    min-width: 36px;
+
+    button {
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+      padding: 0;
+    }
+  }
+
+  .arrow-next {
+    touch-action: manipulation;
+    min-width: 36px;
+
+    button {
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+      padding: 0;
+    }
+  }
+
+  .gallery {
+    overflow: hidden;
+    flex-grow: 1;
+
+    ul {
+      display: flex;
+
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      transition: margin-left 250ms;
+      font-size: 0;
+
+      catalog-product-price-property-photo {
+        line-height: normal;
+      }
+    }
+
+    ul > li {
+      display: inline-block;
+    }
+  }
+
+  .noactive {
+    i::before {
+      color: $c-medium-gray-for-icon;
+    }
+  }
+
+  .novisible {
+    display: none;
+  }
+}

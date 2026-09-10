@@ -1,0 +1,32 @@
+<div class="property-photo-slider" #propertyPhotoSlider>
+  <div class="arrow-prev" [class.noactive]="activePrevArrowSlider" [class.novisible]="visibleArrow">
+    <button type="button" #arrowPrevButton>
+      <i class="icon icon-ic_keyboard_arrow_left_18"></i>
+    </button>
+  </div>
+
+  <div class="gallery">
+    <ul class="gallery-ul" #galleryUl (touchstart)="touchStartGallery($event)" (touchmove)="touchMoveGallery($event)">
+      @for (photo of propertyPhotos; let i = $index; track photo.url) {
+        <li class="gallery-li" [style.margin-right.px]="cardMargin">
+          <simple-slider-photo
+            [photoLink]="photo.url"
+            [isDisabled]="photo.disabled || false"
+            [isActive]="i === selectedElementIndex"
+            [cardWidth] = "cardWidth"
+            [cardHeight] = "cardHeight"
+            [borderWidth] = "borderWidth"
+            [cardPadding] = "cardPadding"
+            (changeModel)="changeModel.emit(i)"
+          ></simple-slider-photo>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <div class="arrow-next" [class.noactive]="activeNextArrowSlider" [class.novisible]="visibleArrow">
+    <button type="button" #arrowNextButton>
+      <i class="icon icon-ic_keyboard_arrow_right"></i>
+    </button>
+  </div>
+</div>

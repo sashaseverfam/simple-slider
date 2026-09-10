@@ -1,0 +1,18 @@
+<div
+  class="img-wrapper"
+  [class.img-wrapper--active]="isActive"
+  [class.img-wrapper--disabled]="isDisabled"
+  [style.border-width.px]="borderWidth"
+  [style.padding.px] = "cardPadding"
+  (click)="changeModel.emit()"
+>
+  @if (photoLink) {
+    <img
+      class="img-photo"
+      alt=""
+      [ngSrc]="photoLink"
+      [width]="cardWidth - 2*cardPadding - 2*borderWidth"
+      [height]="cardHeight - 2*cardPadding - 2*borderWidth"
+    />
+  }
+</div>

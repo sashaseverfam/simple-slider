@@ -1,11 +1,11 @@
 export enum ESliderAction {
-  COMPUTEDPOSITIONSLIDER = 'computedPositionSlider',
-  STEPNEXTSLIDER = 'stepNextSlider',
-  STEPPREVSLIDER = 'stepPrevSlider',
-  TOUCHMOVE = 'touchmove',
+  COMPUTE_POSITION = 'computePosition',
+  STEP_NEXT = 'stepNext',
+  STEP_PREV = 'stepPrev',
+  TOUCH_MOVE = 'touchMove',
 }
 
 export enum EArrowAction {
-  STEPNEXTSLIDER = 'stepNextSlider',
-  STEPPREVSLIDER = 'stepPrevSlider',
+  STEP_NEXT = 'stepNext',
+  STEP_PREV = 'stepPrev',
 }

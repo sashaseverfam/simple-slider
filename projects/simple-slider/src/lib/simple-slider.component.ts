@@ -71,21 +71,21 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
   @ViewChild('arrowNextButton', { static: false, read: ElementRef })
   arrowNextButton?: ElementRef;
 
-  arrowPrevButtonClickDetected = false;
-  arrowNextButtonClickDetected = false;
+  prevArrowLongPress = false;
+  nextArrowLongPress = false;
 
   private _sliderContainer?: HTMLDivElement;
   private _galleryTrack?: HTMLDivElement;
 
-  activeNextArrowSlider = false;
-  activePrevArrowSlider = false;
+  isNextArrowDisabled = false;
+  isPrevArrowDisabled = false;
 
-  cardSliderCount = 0;
-  widthGallery = 0;
-  visibleArrow = false;
+  photoCount = 0;
+  galleryWidth = 0;
+  arrowsHidden = false;
 
-  startTouchCoordX = 0;
-  moveTouchCoordX = 0;
+  touchStartX = 0;
+  touchCurrentX = 0;
 
   private _subs: Subscription[] = [];
   set subs(sub: Subscription) {
@@ -111,7 +111,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
   private syncCardSliderCount = effect(() => {
     const photos = this.propertyPhotos();
     if (photos?.length) {
-      this.cardSliderCount = photos.length;
+      this.photoCount = photos.length;
     }
   }, { allowSignalWrites: true });
 
@@ -127,19 +127,19 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
   }
 
   public stepPrevSlider(): void {
-    this.actionSlider(ESliderAction.STEPPREVSLIDER);
+    this.actionSlider(ESliderAction.STEP_PREV);
   }
 
   public stepNextSlider(): void {
-    this.actionSlider(ESliderAction.STEPNEXTSLIDER);
+    this.actionSlider(ESliderAction.STEP_NEXT);
   }
 
   public computedPositionSlider(): void {
-    this.actionSlider(ESliderAction.COMPUTEDPOSITIONSLIDER);
+    this.actionSlider(ESliderAction.COMPUTE_POSITION);
   }
 
   private actionSlider(action: ESliderAction, touchDelta = 0): void {
-    const countVisibleSlider = Math.floor(this.widthGallery / (this.cardWidth() + this.cardMargin()));
+    const countVisibleSlider = Math.floor(this.galleryWidth / (this.cardWidth() + this.cardMargin()));
 
     let currentMarginLeft = parseInt(
       (this._galleryTrack?.style.marginLeft as string).replace('px', ''),
@@ -148,11 +148,11 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
     currentMarginLeft = isNaN(currentMarginLeft) ? 0 : currentMarginLeft;
 
     let computedPositionSlider = 0;
-    const maxDelta = -(this.cardWidth() + this.cardMargin()) * this.cardSliderCount + this.widthGallery;
+    const maxDelta = -(this.cardWidth() + this.cardMargin()) * this.photoCount + this.galleryWidth;
     let positionSlider = 0;
 
     switch (action) {
-      case ESliderAction.STEPNEXTSLIDER: {
+      case ESliderAction.STEP_NEXT: {
         computedPositionSlider = currentMarginLeft - (this.cardWidth() + this.cardMargin());
         positionSlider = Math.max(computedPositionSlider, maxDelta);
 
@@ -160,14 +160,14 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
           positionSlider = maxDelta;
         }
 
-        if (countVisibleSlider >= this.cardSliderCount) {
+        if (countVisibleSlider >= this.photoCount) {
           positionSlider = 0;
         }
 
         break;
       }
 
-      case ESliderAction.STEPPREVSLIDER: {
+      case ESliderAction.STEP_PREV: {
         computedPositionSlider = currentMarginLeft + (this.cardWidth() + this.cardMargin());
         positionSlider = Math.min(computedPositionSlider, 0);
 
@@ -178,7 +178,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
         break;
       }
 
-      case ESliderAction.COMPUTEDPOSITIONSLIDER: {
+      case ESliderAction.COMPUTE_POSITION: {
         computedPositionSlider = -(this.cardWidth() + this.cardMargin()) * this.selectedElementIndex();
         positionSlider = Math.max(computedPositionSlider, maxDelta);
 
@@ -189,7 +189,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
         break;
       }
 
-      case ESliderAction.TOUCHMOVE: {
+      case ESliderAction.TOUCH_MOVE: {
         positionSlider = currentMarginLeft + touchDelta;
 
         if (positionSlider > 0) {
@@ -200,7 +200,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
           positionSlider = maxDelta;
         }
 
-        if (countVisibleSlider >= this.cardSliderCount) {
+        if (countVisibleSlider >= this.photoCount) {
           positionSlider = 0;
         }
 
@@ -212,8 +212,8 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
       this._galleryTrack.style.marginLeft = positionSlider + 'px';
     }
 
-    this.activePrevArrowSlider = positionSlider === 0;
-    this.activeNextArrowSlider = maxDelta === positionSlider;
+    this.isPrevArrowDisabled = positionSlider === 0;
+    this.isNextArrowDisabled = maxDelta === positionSlider;
 
     this.cdr.detectChanges();
   }
@@ -225,12 +225,12 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    this.startTouchCoordX = evt.touches[0].clientX;
-    this.moveTouchCoordX = this.startTouchCoordX;
+    this.touchStartX = evt.touches[0].clientX;
+    this.touchCurrentX = this.touchStartX;
   }
 
   public touchMoveGallery(evt: TouchEvent) {
-    if (!this.visibleArrow) {
+    if (!this.arrowsHidden) {
       evt.preventDefault();
     }
 
@@ -240,24 +240,24 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
       return;
     }
     const curr = evt.touches[0].clientX;
-    const touchDelta = curr - this.moveTouchCoordX;
+    const touchDelta = curr - this.touchCurrentX;
 
     if (Math.abs(touchDelta) > this.touchDelta()) {
-      this.actionSlider(ESliderAction.TOUCHMOVE, touchDelta);
-      this.moveTouchCoordX = curr;
+      this.actionSlider(ESliderAction.TOUCH_MOVE, touchDelta);
+      this.touchCurrentX = curr;
     }
   }
 
   private initGalleryTrack() {
     this._galleryTrack = this.galleryTrack?.nativeElement;
-    this.widthGallery = +(this._galleryTrack?.parentElement?.offsetWidth || 0);
-    this.cardSliderCount = this._galleryTrack?.children.length || 0;
+    this.galleryWidth = +(this._galleryTrack?.parentElement?.offsetWidth || 0);
+    this.photoCount = this._galleryTrack?.children.length || 0;
   }
 
   private initWheelAction(elementRef: ElementRef) {
     this.subs = fromEvent<WheelEvent>(elementRef.nativeElement, 'wheel').subscribe(
       (e: WheelEvent) => {
-        if (!this.visibleArrow) {
+        if (!this.arrowsHidden) {
           e.preventDefault();
         }
         const delta = e.deltaY;
@@ -293,13 +293,13 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
     this.subs = resize$
       .pipe(distinctUntilChanged(), debounceTime(100))
       .subscribe(([currentWidthPropertyPhotoSlider, galleryUloffsetWidth]) => {
-        this.widthGallery = galleryUloffsetWidth;
+        this.galleryWidth = galleryUloffsetWidth;
         const count =
           (currentWidthPropertyPhotoSlider - 2 * this.arrowWidth()) /
           (this.cardWidth() + this.cardMargin());
         const countCeil = Math.ceil(count);
 
-        this.visibleArrow = countCeil > this.cardSliderCount;
+        this.arrowsHidden = countCeil > this.photoCount;
         this.computedPositionSlider();
 
         this.cdr.detectChanges();
@@ -308,15 +308,15 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
 
   private initArrowPrevButtonActions() {
     if (this.arrowPrevButton) {
-      this.initLongTouch(this.arrowPrevButton, EArrowAction.STEPPREVSLIDER);
-      this.initLongClick(this.arrowPrevButton, EArrowAction.STEPPREVSLIDER);
+      this.initLongTouch(this.arrowPrevButton, EArrowAction.STEP_PREV);
+      this.initLongClick(this.arrowPrevButton, EArrowAction.STEP_PREV);
     }
   }
 
   private initArrowNextButtonActions() {
     if (this.arrowNextButton) {
-      this.initLongTouch(this.arrowNextButton, EArrowAction.STEPNEXTSLIDER);
-      this.initLongClick(this.arrowNextButton, EArrowAction.STEPNEXTSLIDER);
+      this.initLongTouch(this.arrowNextButton, EArrowAction.STEP_NEXT);
+      this.initLongClick(this.arrowNextButton, EArrowAction.STEP_NEXT);
     }
   }
 
@@ -338,13 +338,13 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
       )
       .subscribe(() => {
         switch (typeArrowAction) {
-          case EArrowAction.STEPPREVSLIDER: {
-            this.arrowPrevButtonClickDetected = true;
+          case EArrowAction.STEP_PREV: {
+            this.prevArrowLongPress = true;
             this.stepPrevSlider();
             break;
           }
-          case EArrowAction.STEPNEXTSLIDER: {
-            this.arrowNextButtonClickDetected = true;
+          case EArrowAction.STEP_NEXT: {
+            this.nextArrowLongPress = true;
             this.stepNextSlider();
             break;
           }
@@ -365,17 +365,17 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
 
     this.subs = click$.subscribe(() => {
       switch (typeArrowAction) {
-        case EArrowAction.STEPPREVSLIDER: {
-          if (this.arrowPrevButtonClickDetected) {
-            this.arrowPrevButtonClickDetected = false;
+        case EArrowAction.STEP_PREV: {
+          if (this.prevArrowLongPress) {
+            this.prevArrowLongPress = false;
             return;
           }
           this.stepPrevSlider();
           break;
         }
-        case EArrowAction.STEPNEXTSLIDER: {
-          if (this.arrowNextButtonClickDetected) {
-            this.arrowNextButtonClickDetected = false;
+        case EArrowAction.STEP_NEXT: {
+          if (this.nextArrowLongPress) {
+            this.nextArrowLongPress = false;
             return;
           }
           this.stepNextSlider();
@@ -392,13 +392,13 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
       )
       .subscribe(() => {
         switch (typeArrowAction) {
-          case EArrowAction.STEPPREVSLIDER: {
-            this.arrowPrevButtonClickDetected = true;
+          case EArrowAction.STEP_PREV: {
+            this.prevArrowLongPress = true;
             this.stepPrevSlider();
             break;
           }
-          case EArrowAction.STEPNEXTSLIDER: {
-            this.arrowNextButtonClickDetected = true;
+          case EArrowAction.STEP_NEXT: {
+            this.nextArrowLongPress = true;
             this.stepNextSlider();
             break;
           }

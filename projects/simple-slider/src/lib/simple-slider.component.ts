@@ -57,6 +57,8 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
   arrowBorderColor = input('transparent');
   arrowBorderWidth = input(0);
   arrowColor = input('#333');
+  touchDelta = input(20);
+  arrowWidth = input(36);
 
   changeModel = output<number>();
 
@@ -69,7 +71,6 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
   @ViewChild('arrowNextButton', { static: false, read: ElementRef })
   arrowNextButton?: ElementRef;
 
-  TOUCH_DELTA = 20;
   arrowPrevButtonClickDetected = false;
   arrowNextButtonClickDetected = false;
 
@@ -78,8 +79,6 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
 
   activeNextArrowSlider = false;
   activePrevArrowSlider = false;
-
-  ARROWWIDTHSLIDER = 36;
 
   cardSliderCount = 0;
   widthGallery = 0;
@@ -243,7 +242,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
     const curr = evt.touches[0].clientX;
     const touchDelta = curr - this.moveTouchCoordX;
 
-    if (Math.abs(touchDelta) > this.TOUCH_DELTA) {
+    if (Math.abs(touchDelta) > this.touchDelta()) {
       this.actionSlider(ESliderAction.TOUCHMOVE, touchDelta);
       this.moveTouchCoordX = curr;
     }
@@ -296,7 +295,7 @@ export class SimpleSliderComponent implements AfterViewInit, OnDestroy {
       .subscribe(([currentWidthPropertyPhotoSlider, galleryUloffsetWidth]) => {
         this.widthGallery = galleryUloffsetWidth;
         const count =
-          (currentWidthPropertyPhotoSlider - 2 * this.ARROWWIDTHSLIDER) /
+          (currentWidthPropertyPhotoSlider - 2 * this.arrowWidth()) /
           (this.cardWidth() + this.cardMargin());
         const countCeil = Math.ceil(count);
 
